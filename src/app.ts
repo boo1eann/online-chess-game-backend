@@ -33,6 +33,7 @@ export function createApp(): Express {
 	// Auth routes
 	const authRouter = Router();
 	authRouter.post('/register', authController.register.bind(authController));
+	authRouter.post('/login', authController.login.bind(authController));
 
 	// Game routes
 	// Player routes

@@ -33,4 +33,9 @@ export class UserEntity implements User {
 			data.lastLoginAt
 		);
 	}
+
+	updateLastLogin(): void {
+		this.lastLoginAt = new Date();
+		this.updatedAt = new Date();
+	}
 }
