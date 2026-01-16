@@ -5,6 +5,7 @@ import { container } from './config/inversify.config';
 import { AuthController } from './application/controllers/AuthController';
 import { TYPES } from './types';
 import { ErrorMiddleware } from './application/middleware/ErrorMiddleware';
+import { RateLimitMiddleware } from './application/middleware/RateLimitMiddleware';
 
 export function createApp(): Express {
 	const app = express();
@@ -15,6 +16,7 @@ export function createApp(): Express {
 	app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 	// Rate limiting
+	app.use(RateLimitMiddleware.generalLimiter);
 
 	// Controllers
 	const authController = container.get<AuthController>(TYPES.AuthController);
@@ -32,8 +34,8 @@ export function createApp(): Express {
 
 	// Auth routes
 	const authRouter = Router();
-	authRouter.post('/register', authController.register.bind(authController));
-	authRouter.post('/login', authController.login.bind(authController));
+	authRouter.post('/register', RateLimitMiddleware.authLimiter, authController.register.bind(authController));
+	authRouter.post('/login', RateLimitMiddleware.authLimiter, authController.login.bind(authController));
 
 	// Game routes
 	// Player routes
