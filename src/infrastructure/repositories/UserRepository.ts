@@ -37,6 +37,12 @@ export class UserRepository implements IUserRepository {
 		return result.rows[0] ? this.mapRowToEntity(result.rows[0]) : null;
 	}
 
+	async findById(id: string): Promise<UserEntity | null> {
+		const query = 'SELECT * FROM users WHERE id = $1';
+		const result = await this.db.query(query, [id]);
+		return result.rows[0] ? this.mapRowToEntity(result.rows[0]) : null;
+	}
+
 	async update(user: UserEntity): Promise<UserEntity> {
 		const query = `
 			UPDATE users

@@ -11,6 +11,8 @@ import { IMatchRepository } from '../core/repositories/IMatchRepository';
 import { MatchRepository } from '../infrastructure/repositories/MatchRepository';
 import { JwtService } from '../infrastructure/security/JwtService';
 import { LoginUser } from '../core/usecases/auth/LoginUser';
+import { TokenBlacklist } from '../infrastructure/security/TokenBlacklist';
+import { RefreshToken } from '../core/usecases/auth/RefreshToken';
 
 const container = new Container;
 
@@ -25,10 +27,12 @@ container.bind<IMatchRepository>(TYPES.MatchRepository).to(MatchRepository);
 container.bind<WebSocketServer>(TYPES.WebSocketServer).to(WebSocketServer).inSingletonScope();
 container.bind<PasswordHasher>(TYPES.PasswordHasher).to(PasswordHasher).inSingletonScope();
 container.bind<JwtService>(TYPES.JwtService).to(JwtService).inSingletonScope();
+container.bind<TokenBlacklist>(TYPES.TokenBlacklist).to(TokenBlacklist).inSingletonScope();
 
 // Bind Use Cases - Auth
 container.bind<RegisterUser>(TYPES.RegisterUser).to(RegisterUser);
 container.bind<LoginUser>(TYPES.LoginUser).to(LoginUser);
+container.bind<RefreshToken>(TYPES.RefreshToken).to(RefreshToken);
 
 // Bind Controllers
 container.bind<AuthController>(TYPES.AuthController).to(AuthController);

@@ -7,7 +7,7 @@ import { TYPES } from './types';
 import { ErrorMiddleware } from './application/middleware/ErrorMiddleware';
 import { RateLimitMiddleware } from './application/middleware/RateLimitMiddleware';
 import { ValidationMiddleware } from './application/middleware/ValidationMiddleware';
-import { LoginSchema, RegisterSchema } from './application/validators/AuthValidator';
+import { LoginSchema, RefreshTokenSchema, RegisterSchema } from './application/validators/AuthValidator';
 
 export function createApp(): Express {
 	const app = express();
@@ -47,6 +47,11 @@ export function createApp(): Express {
 		RateLimitMiddleware.authLimiter,
 		ValidationMiddleware.validate(LoginSchema),
 		authController.login.bind(authController));
+
+	authRouter.post(
+		'/refresh',
+		ValidationMiddleware.validate(RefreshTokenSchema),
+		authController.refresh.bind(authController));
 
 	// Game routes
 	// Player routes
