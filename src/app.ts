@@ -1,5 +1,4 @@
 import express, { Router } from 'express'
-
 import type { Express } from 'express';
 import { container } from './config/inversify.config';
 import { AuthController } from './application/controllers/AuthController';
@@ -8,12 +7,14 @@ import { ErrorMiddleware } from './application/middleware/ErrorMiddleware';
 import { RateLimitMiddleware } from './application/middleware/RateLimitMiddleware';
 import { ValidationMiddleware } from './application/middleware/ValidationMiddleware';
 import { LoginSchema, RefreshTokenSchema, RegisterSchema } from './application/validators/AuthValidator';
+import { CorsMiddleware } from './application/middleware/CorsMiddleware';
 
 export function createApp(): Express {
 	const app = express();
 	// Security middleware
 
 	// General middleware
+	app.use(CorsMiddleware.create());
 	app.use(express.json({ limit: '10mb' }));
 	app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
