@@ -9,6 +9,7 @@ export const TYPES = {
 	LoginUser: Symbol.for('LoginUser'),
 	RefreshToken: Symbol.for('RefreshToken'),
 	CreateMatch: Symbol.for('CreateMatch'),
+	GetMatchState: Symbol.for('GetMatchState'),
 
 	// Services
 	WebSocketServer: Symbol.for('WebSocketServer'),

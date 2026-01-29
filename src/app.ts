@@ -68,6 +68,8 @@ export function createApp(): Express {
 		gameController.createMatch.bind(gameController)
 	);
 
+	gameRouter.get('/matches/:matchId', gameController.getMatchState.bind(gameController));
+
 	// Player routes
 	// Mount routes
 	apiRouter.use('/auth', authRouter);

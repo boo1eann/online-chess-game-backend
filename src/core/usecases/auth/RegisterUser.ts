@@ -45,7 +45,7 @@ export class RegisterUser {
 		// Check if user exists
 		const exists = await this.userRepository.exists(dto.email, dto.username);
 		if (exists) {
-			throw new Error('User with this email or username already exists [from usecases]');
+			throw new Error('User with this email or username already exists');
 		}
 
 		// Hash password

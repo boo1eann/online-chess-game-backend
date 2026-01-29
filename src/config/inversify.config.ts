@@ -16,8 +16,9 @@ import { RefreshToken } from '../core/usecases/auth/RefreshToken';
 import { AuthMiddleware } from '../application/middleware/AuthMiddleware';
 import { IGameRepository } from '../core/repositories/IGameRepository';
 import { GameRepository } from '../infrastructure/repositories/GameRepository';
-import { CreateMatch } from '../core/usecases/game/CreateMatch';
+import { CreateMatchService } from '../core/usecases/game/CreateMatchService';
 import { GameController } from '../application/controllers/GameController';
+import { GetMatchStateService } from '../core/usecases/game/GetMatchStateService';
 
 const container = new Container;
 
@@ -41,7 +42,8 @@ container.bind<LoginUser>(TYPES.LoginUser).to(LoginUser);
 container.bind<RefreshToken>(TYPES.RefreshToken).to(RefreshToken);
 
 // Bind Use Cases - Game
-container.bind<CreateMatch>(TYPES.CreateMatch).to(CreateMatch);
+container.bind<CreateMatchService>(TYPES.CreateMatch).to(CreateMatchService);
+container.bind<GetMatchStateService>(TYPES.GetMatchState).to(GetMatchStateService);
 
 // Bind Controllers
 container.bind<AuthController>(TYPES.AuthController).to(AuthController);

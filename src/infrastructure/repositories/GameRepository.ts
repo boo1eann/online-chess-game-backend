@@ -30,6 +30,12 @@ export class GameRepository implements IGameRepository {
 		return this.mapRowToEntity(result.rows[0]);
 	}
 
+	async findMatchById(id: string): Promise<MatchEntity | null> {
+		const query = 'SELECT * FROM matches WHERE id = $1';
+		const result = await this.db.query(query, [id]);
+		return result.rows[0] ? this.mapRowToEntity(result.rows[0]) : null;
+	}
+
 	async findActiveMatchByPlayer(playerId: string): Promise<MatchEntity | null> {
 		const query = `
 			SELECT * FROM matches

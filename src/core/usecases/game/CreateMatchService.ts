@@ -14,7 +14,7 @@ export interface CreateMatchResult {
 }
 
 @injectable()
-export class CreateMatch {
+export class CreateMatchService {
 	constructor(
 		@inject(TYPES.GameRepository) private gameRepository: IGameRepository
 	) { }
