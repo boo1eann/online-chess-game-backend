@@ -14,6 +14,10 @@ import { LoginUser } from '../core/usecases/auth/LoginUser';
 import { TokenBlacklist } from '../infrastructure/security/TokenBlacklist';
 import { RefreshToken } from '../core/usecases/auth/RefreshToken';
 import { AuthMiddleware } from '../application/middleware/AuthMiddleware';
+import { IGameRepository } from '../core/repositories/IGameRepository';
+import { GameRepository } from '../infrastructure/repositories/GameRepository';
+import { CreateMatch } from '../core/usecases/game/CreateMatch';
+import { GameController } from '../application/controllers/GameController';
 
 const container = new Container;
 
@@ -22,6 +26,7 @@ container.bind<PostgresClient>(TYPES.PostgresClient).to(PostgresClient).inSingle
 
 // Bind Repositories
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
+container.bind<IGameRepository>(TYPES.GameRepository).to(GameRepository);
 container.bind<IMatchRepository>(TYPES.MatchRepository).to(MatchRepository);
 
 // Bind Services
@@ -35,8 +40,12 @@ container.bind<RegisterUser>(TYPES.RegisterUser).to(RegisterUser);
 container.bind<LoginUser>(TYPES.LoginUser).to(LoginUser);
 container.bind<RefreshToken>(TYPES.RefreshToken).to(RefreshToken);
 
+// Bind Use Cases - Game
+container.bind<CreateMatch>(TYPES.CreateMatch).to(CreateMatch);
+
 // Bind Controllers
 container.bind<AuthController>(TYPES.AuthController).to(AuthController);
+container.bind<GameController>(TYPES.GameController).to(GameController);
 
 // Bind Middleware
 container.bind<AuthMiddleware>(AuthMiddleware).toSelf();

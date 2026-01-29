@@ -1,12 +1,14 @@
 export const TYPES = {
 	// Repositories
 	UserRepository: Symbol.for('UserRepository'),
+	GameRepository: Symbol.for('GameRepository'),
 	MatchRepository: Symbol.for('MatchRepository'),
 
 	// Use Cases
 	RegisterUser: Symbol.for('RegisterUser'),
 	LoginUser: Symbol.for('LoginUser'),
 	RefreshToken: Symbol.for('RefreshToken'),
+	CreateMatch: Symbol.for('CreateMatch'),
 
 	// Services
 	WebSocketServer: Symbol.for('WebSocketServer'),
@@ -19,4 +21,5 @@ export const TYPES = {
 
 	// Controllers
 	AuthController: Symbol.for('AuthController'),
+	GameController: Symbol.for('GameController'),
 }
