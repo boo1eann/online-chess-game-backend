@@ -13,6 +13,7 @@ import { JwtService } from '../infrastructure/security/JwtService';
 import { LoginUser } from '../core/usecases/auth/LoginUser';
 import { TokenBlacklist } from '../infrastructure/security/TokenBlacklist';
 import { RefreshToken } from '../core/usecases/auth/RefreshToken';
+import { AuthMiddleware } from '../application/middleware/AuthMiddleware';
 
 const container = new Container;
 
@@ -36,5 +37,8 @@ container.bind<RefreshToken>(TYPES.RefreshToken).to(RefreshToken);
 
 // Bind Controllers
 container.bind<AuthController>(TYPES.AuthController).to(AuthController);
+
+// Bind Middleware
+container.bind<AuthMiddleware>(AuthMiddleware).toSelf();
 
 export { container };

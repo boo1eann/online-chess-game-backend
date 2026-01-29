@@ -8,6 +8,7 @@ import { RateLimitMiddleware } from './application/middleware/RateLimitMiddlewar
 import { ValidationMiddleware } from './application/middleware/ValidationMiddleware';
 import { LoginSchema, RefreshTokenSchema, RegisterSchema } from './application/validators/AuthValidator';
 import { CorsMiddleware } from './application/middleware/CorsMiddleware';
+import { AuthMiddleware } from './application/middleware/AuthMiddleware';
 
 export function createApp(): Express {
 	const app = express();
@@ -23,6 +24,7 @@ export function createApp(): Express {
 
 	// Controllers
 	const authController = container.get<AuthController>(TYPES.AuthController);
+	const authMiddleware = container.get<AuthMiddleware>(AuthMiddleware);
 
 	// Routes
 	const apiRouter = Router();
@@ -55,6 +57,15 @@ export function createApp(): Express {
 		authController.refresh.bind(authController));
 
 	// Game routes
+	const gameRouter = Router();
+	gameRouter.use(authMiddleware.authenticate());
+
+	gameRouter.post(
+		'/matches',
+		RateLimitMiddleware.gameLimiter,
+		//gameController.createMatch.bind(gameController)
+	);
+
 	// Player routes
 	// Mount routes
 	apiRouter.use('/auth', authRouter);
