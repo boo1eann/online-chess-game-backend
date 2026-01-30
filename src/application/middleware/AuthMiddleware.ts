@@ -21,6 +21,7 @@ export class AuthMiddleware {
 				res.status(401).json({
 					success: false,
 					error: 'No token provided',
+					code: 'TOKEN_EXPIRED'
 				});
 				return;
 			}

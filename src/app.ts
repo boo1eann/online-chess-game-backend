@@ -51,12 +51,14 @@ export function createApp(): Express {
 		'/login',
 		RateLimitMiddleware.authLimiter,
 		ValidationMiddleware.validate(LoginSchema),
-		authController.login.bind(authController));
+		authController.login.bind(authController)
+	);
 
 	authRouter.post(
 		'/refresh',
 		ValidationMiddleware.validate(RefreshTokenSchema),
-		authController.refresh.bind(authController));
+		authController.refresh.bind(authController)
+	);
 
 	// Game routes
 	const gameRouter = Router();

@@ -5,6 +5,7 @@ import { PasswordHasher } from '../../../infrastructure/security/PasswordHasher'
 import { UserEntity } from '../../entities/User';
 import { PlayerEntity } from '../../entities/Player';
 import { IMatchRepository } from '../../repositories/IMatchRepository';
+import { ConflictError } from '../../../application/errors/ConflictError';
 
 export interface RegisterUserDto {
 	email: string;
@@ -28,24 +29,10 @@ export class RegisterUser {
 	) { }
 
 	async execute(dto: RegisterUserDto): Promise<RegisterUserResult> {
-
-		// Validate input
-		// if (!this.isValidEmail(dto.email)) {
-		// 	throw new Error('Invalid email format [from usecases]');
-		// }
-
-		// if (dto.username.length < 3 || dto.username.length > 20) {
-		// 	throw new Error('Username must be between 3 and 20 characters [from usecases]');
-		// }
-
-		// if (dto.password.length < 8) {
-		// 	throw new Error('Password must be at least 8 characters [from usecases]');
-		// }
-
 		// Check if user exists
 		const exists = await this.userRepository.exists(dto.email, dto.username);
 		if (exists) {
-			throw new Error('User with this email or username already exists');
+			throw new ConflictError('User with this email or username already exists');
 		}
 
 		// Hash password

@@ -9,8 +9,13 @@ export interface CreateMatchDto {
 
 export interface CreateMatchResult {
 	matchId: string;
+	player1Id: string;
+	player2Id?: string;
 	status: string;
-	createdAt: Date;
+	currentTurn: string;
+	moves: any[];
+	result?: string;
+	winnerId?: string;
 }
 
 @injectable()
@@ -32,8 +37,13 @@ export class CreateMatchService {
 
 		return {
 			matchId: createdMatch.id,
+			player1Id: createdMatch.player1Id,
+			player2Id: createdMatch.player2Id,
 			status: createdMatch.status,
-			createdAt: createdMatch.createdAt,
+			currentTurn: createdMatch.currentTurn,
+			moves: createdMatch.moves,
+			result: createdMatch.result,
+			winnerId: createdMatch.winnerId,
 		};
 	}
 }

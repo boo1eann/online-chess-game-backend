@@ -1,9 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-
-export interface AppError extends Error {
-	statusCode?: number;
-	isOperational?: boolean;
-}
+import { AppError } from '../errors/AppError';
 
 export class ErrorMiddleware {
 	static handle(err: AppError, req: Request, res: Response, next: NextFunction): void {
@@ -22,7 +18,7 @@ export class ErrorMiddleware {
 		if (process.env.NODE_ENV === 'production' && !isOperational) {
 			res.status(500).json({
 				success: false,
-				error: 'Internal server error',
+				error: 'Internal server error!',
 			});
 			return;
 		}
@@ -30,6 +26,7 @@ export class ErrorMiddleware {
 		res.status(statusCode).json({
 			success: false,
 			error: err.message,
+			code: err.code,
 			...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
 		});
 	}

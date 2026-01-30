@@ -3,6 +3,7 @@ import { TYPES } from '../../../types';
 import { IUserRepository } from '../../repositories/IUserRepository';
 import { PasswordHasher } from '../../../infrastructure/security/PasswordHasher';
 import { JwtService } from '../../../infrastructure/security/JwtService';
+import { UnauthorizedError } from '../../../application/errors/UnauthorizedError';
 
 export interface LoginUserDto {
 	email: string;
@@ -28,7 +29,7 @@ export class LoginUser {
 		// Find user
 		const user = await this.userRepository.findByEmail(dto.email);
 		if (!user) {
-			throw new Error('Invalid credentials');
+			throw new UnauthorizedError('Invalid credentials', 'INVALID_CREDENTIALS');
 		}
 
 		if (!user.isActive) {
@@ -38,7 +39,7 @@ export class LoginUser {
 		// Verify passowrd
 		const isValid = await this.passwordHasher.verify(dto.password, user.passwordHash);
 		if (!isValid) {
-			throw new Error('Invalid credentials');
+			throw new UnauthorizedError('Invalid credentials', 'INVALID_CREDENTIALS');
 		}
 
 		// Update last login
