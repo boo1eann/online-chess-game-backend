@@ -1,43 +1,31 @@
-import { Request, Response, NextFunction } from 'express';
-
-export interface AppError extends Error {
-	statusCode?: number;
-	isOperational?: boolean;
-}
+import { Request, Response, NextFunction } from "express";
+import { AppError } from "../../utils/AppError";
+import { HTTPSTATUS } from "../../config/http.config";
 
 export class ErrorMiddleware {
-	static handle(err: AppError, req: Request, res: Response, next: NextFunction): void {
-		const statusCode = err.statusCode || 500;
-		const isOperational = err.isOperational || false;
+  static handle(
+    err: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Response<any, Record<string, any>> {
+    if (err instanceof AppError) {
+      return res.status(err.statusCode).json({
+        message: err.message,
+        errorCode: err.errorCode,
+      });
+    }
 
-		console.error('Error:', {
-			message: err.message,
-			stack: err.stack,
-			statusCode,
-			isOperational,
-			path: req.path,
-			method: req.method,
-		});
+    return res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({
+      message: "Internal Server Error",
+      error: err?.message || "Unknown error occured",
+    });
+  }
 
-		if (process.env.NODE_ENV === 'production' && !isOperational) {
-			res.status(500).json({
-				success: false,
-				error: 'Internal server error',
-			});
-			return;
-		}
-
-		res.status(statusCode).json({
-			success: false,
-			error: err.message,
-			...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
-		});
-	}
-
-	static notFound(req: Request, res: Response): void {
-		res.status(404).json({
-			success: false,
-			error: `Route ${req.originalUrl} not found`,
-		});
-	}
+  static notFound(req: Request, res: Response): void {
+    res.status(404).json({
+      success: false,
+      error: `Route ${req.originalUrl} not found`,
+    });
+  }
 }
